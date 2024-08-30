@@ -74,6 +74,22 @@ class TodoList:
     def mark_undone_at(self, index:int):
         self.todo_at(index).done = False
 
+    def mark_all_done(self):
+        for todo in self._todos:
+            todo.done = True
+
+    def mark_all_undone(self):
+        for todo in self._todos:
+            todo.done = False
+
+    def all_done(self):
+        for todo in self._todos:
+            if not todo.done:
+                return False
+        return True
+
+    def remove_at(self, index:int):
+        self._todos.pop(index)
 
 # TESTS ***********************************************************
 
@@ -242,4 +258,81 @@ def step_7():
     except IndexError:
         print('Expected IndexError: Got it!')
 
-step_7()
+# step_7()
+
+
+def step_8():
+    print('--------------------------------- Step 8')
+    todo_list = setup()
+
+    print(todo_list)
+    # ---- Today's Todos -----
+    # [ ] Buy milk
+    # [X] Clean room'
+    # [ ] Go to gym
+
+    todo_list.mark_all_done()
+    print(todo_list)
+    # ---- Today's Todos -----
+    # [X] Buy milk
+    # [X] Clean room'
+    # [X] Go to gym
+
+    todo_list.mark_all_undone()
+    print(todo_list)
+    # ---- Today's Todos -----
+    # [ ] Buy milk
+    # [ ] Clean room'
+    # [ ] Go to gym
+
+# step_8()
+
+def step_9():
+    print('--------------------------------- Step 9')
+    todo_list = setup()
+
+    print(todo_list.all_done())         # False
+
+    todo_list.mark_all_done()
+    print(todo_list.all_done())         # True
+
+    todo_list.mark_undone_at(1)
+    print(todo_list.all_done())         # False
+
+    print(empty_todo_list.all_done())   # True
+
+# step_9()
+
+
+def step_10():
+    print('--------------------------------- Step 10')
+    todo_list = setup()
+
+    print(todo_list)
+    # ---- Today's Todos -----
+    # [ ] Buy milk
+    # [X] Clean room'
+    # [ ] Go to gym
+
+    todo_list.remove_at(1)
+    print(todo_list)
+    # ---- Today's Todos -----
+    # [ ] Buy milk
+    # [ ] Go to gym
+
+    todo_list.remove_at(1)
+    print(todo_list)
+    # ---- Today's Todos -----
+    # [ ] Buy milk
+
+    try:
+        todo_list.remove_at(1)
+    except IndexError:
+        print('Expected IndexError: Got it!')
+
+    todo_list.remove_at(0)
+    print(todo_list)
+    # ---- Today's Todos -----
+    print(todo_list)
+
+step_10()
