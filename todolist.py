@@ -47,6 +47,13 @@ class TodoList:
         else:
             class_name = Todo.__class__.__name__
             raise TypeError(f"Requires object of type `{class_name}`")
+        
+    def __str__(self):
+        output_lines = ["---- Today's Todos -----"]
+        output_lines += [str(todo) for todo in self._todos]
+        return '\n'.join(output_lines)
+
+
 
 # TESTS ***********************************************************
 
@@ -81,4 +88,17 @@ def step_1():
     for todo in todo_list._todos:
         print(todo)
 
-step_1()
+# step_1()
+
+
+def step_2():
+    print('--------------------------------- Step 2')
+    todo_list = setup()
+
+    print(todo_list)
+    # ---- Today's Todos -----
+    # [ ] Buy milk
+    # [X] Clean room
+    # [ ] Go to gym
+
+step_2()
