@@ -6,7 +6,6 @@ class Todo:
     INCOMPLETE = '[ ]'
 
     def __init__(self, title):
-        Todo.instances.append(self)
         self._title = title
         self.done = False
     
@@ -32,60 +31,54 @@ class Todo:
         return f"{self._marker} {self.title}"
         
     def __eq__(self, other:Todo):
-        if not isinstance(other, Todo):
-            return NotImplemented
-        return (self.done == other.done) and (self.title == other.title)
+        if isinstance(other, Todo):
+            return (self.done == other.done) and (self.title == other.title)
+        return NotImplemented
 
 class TodoList:
-    '''
     
-    
-    '''
-    
-    
-    
-    pass
+    def __init__(self, name):
+        self._name = name
+        self._todos = []
 
+    def add(self, todo:Todo):
+        if isinstance(todo, Todo):
+            self._todos.append(todo)
+        else:
+            class_name = Todo.__class__.__name__
+            raise TypeError(f"Requires object of type `{class_name}`")
 
-'''
-STATE
-Title = string
-Done = boolean
+# TESTS ***********************************************************
 
-BEHAVIORS
+empty_todo_list = TodoList('Nothing Doing')
 
-'''
-
-
-
-def test_todo():
+def setup():
     todo1 = Todo('Buy milk')
     todo2 = Todo('Clean room')
     todo3 = Todo('Go to gym')
-    todo4 = Todo('Clean room')
 
-    print(todo1)                  # [ ] Buy milk
-    print(todo2)                  # [ ] Clean room
-    print(todo3)                  # [ ] Go to gym
-    print(todo4)                  # [ ] Clean room
+    todo2.done = True
 
-    print(todo2 == todo4)         # True
-    print(todo1 == todo2)         # False
-    print(todo4.done)             # False
+    todo_list = TodoList("Today's Todos")
+    todo_list.add(todo1)
+    todo_list.add(todo2)
+    todo_list.add(todo3)
 
-    todo1.done = True
-    todo4.done = True
-    print(todo4.done)             # True
+    return todo_list
 
-    print(todo1)                  # [X] Buy milk
-    print(todo2)                  # [ ] Clean room
-    print(todo3)                  # [ ] Go to gym
-    print(todo4)                  # [X] Clean room
 
-    print(todo2 == todo4)         # False
+def step_1():
+    print('--------------------------------- Step 1')
+    todo_list = setup()
 
-    todo4.done = False
-    print(todo4.done)             # False
-    print(todo4)                  # [ ] Clean room
+    # setup() uses `todo_list.add` to add 3 todos
 
-test_todo()
+    try:
+        todo_list.add(1)
+    except TypeError:
+        print('TypeError detected')    # TypeError detected
+
+    for todo in todo_list._todos:
+        print(todo)
+
+step_1()
