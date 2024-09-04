@@ -35,6 +35,9 @@ class Todo:
             return (self.done == other.done) and (self.title == other.title)
         return NotImplemented
 
+def filter(callback, collection):
+    return [element for element in collection if callback(element)]
+
 class TodoList:
     
     def __init__(self, name):
@@ -97,10 +100,20 @@ class TodoList:
 
     def select(self, callback:function):
         new_list = TodoList('Subset of Todos')
-        subset = [todo for todo in self._todos if callback(todo)]
-        for todo in subset:
+        for todo in filter(callback, self._todos):
             new_list.add(todo)
         return new_list
+
+    def find_by_title(self, desired_title:str):
+        '''
+        Iterate through each todo
+            If title matches, return the todo
+            If you reach the end of the list and none is found, raise `IndexError`
+        '''
+        for todo in self._todos:
+            if todo.title == desired_title:
+                return todo
+        raise IndexError("Todo with matching title not found!")
 
 # TESTS ***********************************************************
 
@@ -396,3 +409,34 @@ def step_12():
     # [X] Clean room
 
 step_12()
+
+
+def step_13():
+    print('--------------------------------- Step 13')
+    todo_list = setup()
+
+    todo_list.add(Todo('Clean room'))
+    print(todo_list)
+    # ---- Today's Todos -----
+    # [ ] Buy milk
+    # [X] Clean room
+    # [ ] Go to gym
+    # [ ] Clean room
+
+    print()
+    found = todo_list.find_by_title('Go to gym')
+    print(found)
+    # [ ] Go to gym
+
+    print()
+    found = todo_list.find_by_title('Clean room')
+    print(found)
+    # [X] Clean room
+
+    print()
+    try:
+        todo_list.find_by_title('Feed cat')
+    except IndexError:
+        print('Expected IndexError: Got it!')
+
+step_13()
