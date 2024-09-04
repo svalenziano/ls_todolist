@@ -91,6 +91,17 @@ class TodoList:
     def remove_at(self, index:int):
         self._todos.pop(index)
 
+    def each(self, callback:function):
+        for todo in self._todos:
+            callback(todo)
+
+    def select(self, callback:function):
+        new_list = TodoList('Subset of Todos')
+        subset = [todo for todo in self._todos if callback(todo)]
+        for todo in subset:
+            new_list.add(todo)
+        return new_list
+
 # TESTS ***********************************************************
 
 empty_todo_list = TodoList('Nothing Doing')
@@ -335,4 +346,53 @@ def step_10():
     # ---- Today's Todos -----
     print(todo_list)
 
-step_10()
+#step_10()
+
+
+def step_11():
+    print('--------------------------------- Step 11')
+    todo_list = setup()
+
+    todo_list.mark_all_undone()
+    print(todo_list)
+    # ---- Today's Todos -----
+    # [ ] Buy milk
+    # [ ] Clean room
+    # [ ] Go to gym
+
+    def done_if_y_in_title(todo):
+        if 'y' in todo.title:
+            todo.done = True
+
+    todo_list.each(done_if_y_in_title)
+    print(todo_list)
+    # ---- Today's Todos -----
+    # [X] Buy milk
+    # [ ] Clean room
+    # [X] Go to gym
+
+    todo_list.each(lambda todo: print('>>>', todo))
+    # ---- Today's Todos -----
+    # >>> [X] Buy milk
+    # >>> [ ] Clean room
+    # >>> [X] Go to gym
+
+step_11()
+
+def step_12():
+    print('--------------------------------- Step 12')
+    todo_list = setup()
+
+    def y_in_title(todo:Todo):
+        return 'y' in todo.title
+
+    print(todo_list.select(lambda todo: y_in_title(todo)))
+    # ---- Today's Todos -----
+    # [ ] Buy milk
+    # [ ] Go to gym
+
+    print(todo_list.select(lambda todo: todo.done))
+    # ---- Today's Todos -----
+    # [X] Clean room
+
+step_12()
