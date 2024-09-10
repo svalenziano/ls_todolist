@@ -1,6 +1,6 @@
 class Todo:
-    DONE_MARKER = 'X'
-    UNDONE_MARKER = ' '
+    IS_DONE = 'X'
+    IS_UNDONE = ' '
 
     def __init__(self, title):
         self._title = title
@@ -19,7 +19,7 @@ class Todo:
         self._done = done
 
     def __str__(self):
-        marker = self.DONE_MARKER if self.done else self.UNDONE_MARKER
+        marker = self.IS_DONE if self.done else self.IS_UNDONE
         return f'[{marker}] {self.title}'
 
     def __eq__(self, other):
